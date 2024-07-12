@@ -1,35 +1,35 @@
-#[derive(Default)]
+use egui::*;
+
+#[derive(Clone, PartialEq, Eq)]
 pub struct Rustodo {
-    name: String,
-    age: u32,
+    columns: Vec<Vec<String>>,
 }
 
-impl Rustodo {
-    pub fn new(_cc: &eframe::CreationContext<'_>) -> Self {
-        // Customize egui here with cc.egui_ctx.set_fonts and cc.egui_ctx.set_visuals.
-        // Restore app state using cc.storage (requires the "persistence" feature).
-        // Use the cc.gl (a glow::Context) to create graphics shaders and buffers that you can use
-        // for e.g. egui::PaintCallback.
+impl Default for Rustodo {
+    fn default() -> Self {
         Self {
-            name: String::new(),
-            age: 0,
+            columns: vec! [
+                vec!["Item A", "Item B", "Item C", "Item D"],
+                vec!["Item E", "Item F", "Item G"],
+                vec!["Item H", "Item I", "Item J", "Item K"],
+            ]
+            .into_iter()
+            .map(|v| v.into_iter().map(ToString::to_string).collect())
+            .collect(),
         }
     }
 }
 
 impl eframe::App for Rustodo {
-   fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-       egui::CentralPanel::default().show(ctx, |ui| {
-           ui.heading("Hello World!");
-           ui.horizontal(|ui| {
-            ui.label("Your name: ");
-            ui.text_edit_singleline(&mut self.name);
-           });
-           ui.add(egui::Slider::new(&mut self.age, 0..=120).text("age"));
-           if ui.button("Increment").clicked() {
-            self.age += 1;
-           }
-           ui.label(format!("Hello {}, age {}", self.name, self.age));
-       });
+    fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+        egui::CentralPanel::default().show(ctx, |ui| {
+            egui::Grid::new("my_grid").show(ui, |ui| {
+                ui.label("Row 1, Column 1");
+                ui.label("Row 1, Column 2");
+                ui.end_row();
+                ui.label("Row 2, Column 1");
+                ui.label("Row 2, Column 2");
+            });
+        });
    }
 }
