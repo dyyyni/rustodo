@@ -20,16 +20,26 @@ impl Default for Rustodo {
     }
 }
 
+impl Rustodo {
+    pub fn new(_cc: &eframe::CreationContext<'_>) -> Self {
+        Self::default()
+    }
+
+    fn ui(&mut self, ui: &mut Ui) {
+        ui.label("Henlo world.");
+    }
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+struct Location {
+    col: usize,
+    row: usize,
+}
+
 impl eframe::App for Rustodo {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         egui::CentralPanel::default().show(ctx, |ui| {
-            egui::Grid::new("my_grid").show(ui, |ui| {
-                ui.label("Row 1, Column 1");
-                ui.label("Row 1, Column 2");
-                ui.end_row();
-                ui.label("Row 2, Column 1");
-                ui.label("Row 2, Column 2");
-            });
+            self.ui(ui);
         });
-   }
+    }
 }
